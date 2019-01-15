@@ -1,0 +1,27 @@
+{
+  "name": "@udock/mock-server",
+  "version": "0.0.4",
+  "description": "",
+  "main": "main.js",
+  "module": "main.js",
+  "bin": "bin/mock-server",
+  "files": [
+    "bin",
+    "routes",
+    "main.js",
+    "proxy.js"
+  ],
+  "scripts": {
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@udock/plugin-mock": "0.0.5",
+    "axios": "^0.18.0",
+    "glob": "^7.1.3",
+    "koa": "^2.6.2",
+    "koa-bodyparser": "^4.2.1",
+    "koa-router": "^7.4.0",
+    "lodash": "^4.17.11"
+  }
+}
