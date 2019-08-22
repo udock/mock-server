@@ -1,32 +1,29 @@
-const http = require('http');
-const axios = require('axios')
+const AnyProxy = require('./lib/mini-anyproxy/proxy')
+const rule = require('./rule/mock')
 
-const proxy = http.createServer((request, response) => {
-  axios({
-    url: request.url,
-    method: request.method,
-    headers: request.headers,
-    data: request.data
-  }).then((res) => {
-    response.writeHead(res.status, res.headers)
-    response.end(JSON.stringify(res.data || ''))
-  }, (res) => {
-    response.writeHead(res.status || 404, res.headers || {})
-    response.end(JSON.stringify(res.data || ''))
-  }).catch((res) => {
-    response.writeHead(res.status || 500, res.headers || {})
-    response.end(JSON.stringify(res.data || ''))
-  })
-})
+let proxyServer
 
 module.exports = {
-  start (options = {}) {
-    options = {
-      addr: '0.0.0.0',
-      port: 7777,
-      ...options
+  start (opts) {
+    const options = {
+      port: opts.port,
+      rule,
+      throttle: 10000,
+      forceProxyHttps: true,
+      wsIntercept: true,
+      silent: false
     }
-    proxy.listen(options.port, options.addr)
-    console.log(`mock proxy server on ${options.addr}:${options.port}`)
+    proxyServer = new AnyProxy.ProxyServer(options)
+
+    proxyServer.on('ready', () => {
+
+    })
+
+    proxyServer.on('error', (e) => {
+
+    })
+
+    proxyServer.start()
   }
 }
+

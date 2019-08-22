@@ -1,10 +1,10 @@
 const path = require('path')
 const glob = require('glob')
-const Router = require('koa-router')
 const axios = require('axios')
-const {install} = require('@udock/plugin-mock').default
+const {install, useProxy} = require('@udock/plugin-mock').default
 
 install(null, {
+  useProxy: true,
   load: (file) => {
     let ret
     let filePath = path.resolve('./mock', file)
@@ -39,20 +39,41 @@ install(null, {
   }
 })
 
-const mock = new Router()
-
-mock
-  .all('*', async (ctx) => {
-    try {
-      const res = await axios.get(ctx.request.path)
-      ctx.status = res.status
-      ctx.header = res.header
-      ctx.body = res.data
-    } catch (res) {
-      ctx.status = res.status
-      ctx.header = res.header
-      ctx.body = res.data
+function adapteResponse(res) {
+  return {
+    response: {
+      statusCode: res.status,
+      header: res.header,
+      body: typeof res.data === 'string' ? res.data : JSON.stringify(res.data)
     }
-  })
+  }
+}
 
-module.exports = mock
+module.exports = {
+  summary: 'mock rule',
+  beforeSendRequest(requestDetail) {
+    console.log('beforeSendRequest: ', requestDetail.url)
+
+    return new Promise((resolve, reject) => {
+
+      console.log('url===>>', requestDetail.url)
+      console.log('requestData===>>', requestDetail.requestData + '')
+
+      axios.request({
+        url: requestDetail.url,
+        method: requestDetail.requestOptions.method,
+        headers: requestDetail.requestOptions.headers,
+        data: requestDetail.requestData
+      }).then((res) => {
+        resolve(adapteResponse(res))
+      }, (res) => {
+        if (res === useProxy) {
+          // 通过代理进行真实请求
+          resolve(requestDetail)
+        } else {
+          resolve(adapteResponse(res))
+        }
+      })
+    })
+  }
+}

@@ -1,27 +1,38 @@
 {
   "name": "@udock/mock-server",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "description": "",
   "main": "main.js",
   "module": "main.js",
   "bin": "bin/mock-server",
   "files": [
     "bin",
-    "routes",
+    "lib",
+    "rule",
     "main.js",
     "proxy.js"
   ],
-  "scripts": {
-  },
+  "scripts": {},
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@udock/plugin-mock": "0.0.5",
+    "@udock/plugin-mock": "0.1.0",
     "axios": "^0.18.0",
+    "brotli": "^1.3.2",
+    "colorful": "^2.1.0",
+    "commander": "~2.19.0",
+    "fast-json-stringify": "^1.10.0",
     "glob": "^7.1.3",
-    "koa": "^2.6.2",
-    "koa-bodyparser": "^4.2.1",
-    "koa-router": "^7.4.0",
-    "lodash": "^4.17.11"
+    "iconv-lite": "^0.4.6",
+    "inquirer": "^6.2.1",
+    "lodash": "^4.17.11",
+    "mime-types": "2.1.21",
+    "nedb": "^1.8.0",
+    "node-easy-cert": "^1.3.1",
+    "pug": "^2.0.3",
+    "request": "^2.74.0",
+    "stream-throttle": "^0.1.3",
+    "thunkify": "^2.1.2",
+    "ws": "^6.1.2"
   }
 }
