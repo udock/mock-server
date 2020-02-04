@@ -42,9 +42,11 @@ install(null, {
 function adapteResponse(res) {
   return {
     response: {
-      statusCode: res.status,
-      header: res.header,
-      body: typeof res.data === 'string' ? res.data : JSON.stringify(res.data)
+      statusCode: res.status || 200,
+      header: res.headers || {},
+      body: res.data === undefined
+        ? undefined
+        : (typeof res.data === 'string' ? res.data : JSON.stringify(res.data))
     }
   }
 }
